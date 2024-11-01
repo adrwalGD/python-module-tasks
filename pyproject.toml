@@ -5,7 +5,10 @@ description = "Default template for PDM package"
 authors = [
     {name = "xDepcio", email = "olek.drwal@gmail.com"},
 ]
-dependencies = []
+dependencies = [
+    "py-cpuinfo>=9.0.0",
+    "psutil>=6.1.0",
+]
 requires-python = ">=3.12"
 readme = "README.md"
 license = {text = "MIT"}
