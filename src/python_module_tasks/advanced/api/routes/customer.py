@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
 from python_module_tasks.advanced.api.models import Order, Pizza
 
 router = APIRouter()
@@ -16,11 +17,18 @@ async def get_menu():
     return pizzas
 
 
+class OrderBody(BaseModel):
+    pizza_id: int
+    quantity: int
+
+
 @router.post("/order", response_model=Order)
-async def create_order(pizza_id: int, quantity: int):
-    if pizza_id not in [pizza.id for pizza in pizzas]:
+async def create_order(body: OrderBody):
+    if body.pizza_id not in [pizza.id for pizza in pizzas]:
         raise HTTPException(status_code=404, detail="Pizza not found")
-    new_order = Order(id=len(orders) + 1, pizza_id=pizza_id, quantity=quantity)
+    new_order = Order(
+        id=len(orders) + 1, pizza_id=body.pizza_id, quantity=body.quantity
+    )
     orders[new_order.id] = new_order
     return new_order
 
