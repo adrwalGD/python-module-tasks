@@ -28,3 +28,6 @@ build-backend = "pdm.backend"
 
 [tool.pdm]
 distribution = true
+
+[tool.pdm.scripts]
+start-api = "python3 -m python_module_tasks.advanced.api.main"

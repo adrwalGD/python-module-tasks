@@ -1,5 +1,7 @@
 from fastapi.testclient import TestClient
 from python_module_tasks.advanced.api.main import app
+from python_module_tasks.advanced.api.models import Pizza
+from pydantic import ValidationError
 
 client = TestClient(app)
 
@@ -8,7 +10,11 @@ def test_list_menu():
     response = client.get("/customer/menu")
     assert response.status_code == 200
     assert isinstance(response.json(), list)
-    assert "id" in response.json()[0]
+    for item in response.json():
+        try:
+            Pizza(**item)
+        except ValidationError:
+            assert False
 
 
 def test_create_order():
