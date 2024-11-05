@@ -84,10 +84,10 @@ class TestAdminRoutes:
 
     def test_create_pizza(self):
         headers = {"token": self.admin_token}
-        payload = {"id": 3, "name": "Hawaiian", "size": "large", "price": 13.99}
+        payload = {"name": "Hawaiian", "size": "large", "price": 13.99}
         response = client.post("/admin/menu", json=payload, headers=headers)
         assert response.status_code == 200
-        assert response.json() == payload
+        assert response.json() == Pizza(id=3, **payload).model_dump()
 
     def test_delete_pizza(self):
         headers = {"token": self.admin_token}

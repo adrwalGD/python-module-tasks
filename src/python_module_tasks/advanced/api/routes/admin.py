@@ -1,8 +1,9 @@
 import os
 from fastapi import APIRouter, HTTPException, Depends, Header
 
-from python_module_tasks.advanced.api.models import Pizza
+from python_module_tasks.advanced.api.models import Pizza, PizzaSize
 from python_module_tasks.advanced.api.routes.customer import pizzas, orders
+from pydantic import BaseModel
 
 router = APIRouter()
 
@@ -19,12 +20,19 @@ async def perform_admin_action():
     return {"message": "Admin action successful"}
 
 
+class CreatePizzaBody(BaseModel):
+    name: str
+    size: PizzaSize
+    price: float
+
+
 @router.post("/menu", dependencies=[Depends(admin_auth)])
-async def create_pizza(body: Pizza):
+async def create_pizza(body: CreatePizzaBody):
     """Add new pizza to the menu (admin only)"""
     global pizzas
-    pizzas.append(body)
-    return body
+    pizza = Pizza(id=len(pizzas) + 1, name=body.name, size=body.size, price=body.price)
+    pizzas.append(pizza)
+    return pizza
 
 
 @router.delete("/menu/{pizza_id}", dependencies=[Depends(admin_auth)])
