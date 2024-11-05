@@ -19,6 +19,7 @@ class Order(BaseModel):
     id: int
     pizza_id: int
     quantity: int
+    address: str
     status: OrderStatus = "pending"
 
 

@@ -21,6 +21,7 @@ async def get_menu():
 class OrderBody(BaseModel):
     pizza_id: int
     quantity: int
+    address: str
 
 
 @router.post("/order", response_model=Order)
@@ -29,7 +30,10 @@ async def create_order(body: OrderBody):
     if body.pizza_id not in [pizza.id for pizza in pizzas]:
         raise HTTPException(status_code=404, detail="Pizza not found")
     new_order = Order(
-        id=len(orders) + 1, pizza_id=body.pizza_id, quantity=body.quantity
+        id=len(orders) + 1,
+        pizza_id=body.pizza_id,
+        quantity=body.quantity,
+        address=body.address,
     )
     orders[new_order.id] = new_order
     return new_order

@@ -17,7 +17,18 @@ def test_list_menu():
 
 @pytest.mark.usefixtures("run_api_server")
 def test_create_order():
-    result = runner.invoke(app, ["create-order", "--pizza-id", "1", "--quantity", "2"])
+    result = runner.invoke(
+        app,
+        [
+            "create-order",
+            "--pizza-id",
+            "1",
+            "--quantity",
+            "2",
+            "--address",
+            "123 Main St",
+        ],
+    )
     assert result.exit_code == 0
     assert "Order created with ID:" in result.output
 
@@ -25,7 +36,16 @@ def test_create_order():
 @pytest.mark.usefixtures("run_api_server")
 def test_check_order_status():
     order_result = runner.invoke(
-        app, ["create-order", "--pizza-id", "1", "--quantity", "2"]
+        app,
+        [
+            "create-order",
+            "--pizza-id",
+            "1",
+            "--quantity",
+            "2",
+            "--address",
+            "123 Main St",
+        ],
     )
     order_id = int(order_result.output.split("ID:")[1].strip())
 
@@ -37,7 +57,16 @@ def test_check_order_status():
 @pytest.mark.usefixtures("run_api_server")
 def test_cancel_order():
     order_result = runner.invoke(
-        app, ["create-order", "--pizza-id", "1", "--quantity", "2"]
+        app,
+        [
+            "create-order",
+            "--pizza-id",
+            "1",
+            "--quantity",
+            "2",
+            "--address",
+            "123 Main St",
+        ],
     )
     order_id = int(order_result.output.split("ID:")[1].strip())
 

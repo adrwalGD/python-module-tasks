@@ -27,7 +27,7 @@ class TestCustomerRoutes:
                 pytest.fail(f"Unexpected error: {e}")
 
     def test_create_order(self):
-        payload = {"pizza_id": 1, "quantity": 2}
+        payload = {"pizza_id": 1, "quantity": 2, "address": "123 Main St"}
         response = client.post("/customer/order", json=payload)
         assert response.status_code == 200
         try:
@@ -39,7 +39,8 @@ class TestCustomerRoutes:
 
     def test_check_order_status(self):
         create_response = client.post(
-            "/customer/order", json={"pizza_id": 1, "quantity": 2}
+            "/customer/order",
+            json={"pizza_id": 1, "quantity": 2, "address": "123 Main St"},
         )
         order_id = create_response.json()["id"]
 
@@ -55,7 +56,8 @@ class TestCustomerRoutes:
 
     def test_cancel_order(self):
         create_response = client.post(
-            "/customer/order", json={"pizza_id": 1, "quantity": 2}
+            "/customer/order",
+            json={"pizza_id": 1, "quantity": 2, "address": "123 Main St"},
         )
         order_id = create_response.json()["id"]
 
@@ -97,7 +99,8 @@ class TestAdminRoutes:
     def test_cancel_order(self):
         headers = {"token": self.admin_token}
         create_response = client.post(
-            "/customer/order", json={"pizza_id": 1, "quantity": 2}
+            "/customer/order",
+            json={"pizza_id": 1, "quantity": 2, "address": "123 Main St"},
         )
         order_id = create_response.json()["id"]
 

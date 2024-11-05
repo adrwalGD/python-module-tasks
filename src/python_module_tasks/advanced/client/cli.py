@@ -21,9 +21,13 @@ def list_menu():
 
 
 @app.command()
-def create_order(pizza_id: int = typer.Option(), quantity: int = typer.Option()):
+def create_order(
+    pizza_id: int = typer.Option(),
+    quantity: int = typer.Option(),
+    address: str = typer.Option(),
+):
     """Create a new order for a pizza."""
-    payload = {"pizza_id": pizza_id, "quantity": quantity}
+    payload = {"pizza_id": pizza_id, "quantity": quantity, "address": address}
     response = requests.post(f"{API_BASE_URL}/customer/order", json=payload)
     if response.status_code == 200:
         order = response.json()
