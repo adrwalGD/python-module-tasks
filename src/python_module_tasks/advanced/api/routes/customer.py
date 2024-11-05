@@ -14,6 +14,7 @@ orders: dict[int, Order] = {}
 
 @router.get("/menu", response_model=list[Pizza])
 async def get_menu():
+    """Get the list of available pizzas"""
     return pizzas
 
 
@@ -24,6 +25,7 @@ class OrderBody(BaseModel):
 
 @router.post("/order", response_model=Order)
 async def create_order(body: OrderBody):
+    """Create a new order"""
     if body.pizza_id not in [pizza.id for pizza in pizzas]:
         raise HTTPException(status_code=404, detail="Pizza not found")
     new_order = Order(
@@ -35,6 +37,7 @@ async def create_order(body: OrderBody):
 
 @router.get("/order/{order_id}", response_model=Order)
 async def check_order_status(order_id: int):
+    """Check the status of an order"""
     order = orders.get(order_id)
     if not order:
         raise HTTPException(status_code=404, detail="Order not found")
@@ -43,6 +46,7 @@ async def check_order_status(order_id: int):
 
 @router.delete("/order/{order_id}")
 async def cancel_order(order_id: int):
+    """Cancel an order"""
     order = orders.get(order_id)
     if not order:
         raise HTTPException(status_code=404, detail="Order not found")

@@ -12,4 +12,5 @@ def admin_auth(token: str = Header()):
 
 @router.get("/admin-action", dependencies=[Depends(admin_auth)])
 async def perform_admin_action():
+    """Perform an admin action (dummy)"""
     return {"message": "Admin action successful"}
