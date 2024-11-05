@@ -1,3 +1,8 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from fastapi.testclient import TestClient
 from python_module_tasks.advanced.api.main import app
 from python_module_tasks.advanced.api.models import Order, Pizza
@@ -61,6 +66,8 @@ class TestCustomerRoutes:
 
 
 class TestAdminRoutes:
+    admin_token = os.getenv("ADMIN_TOKEN", "")
+
     def test_admin_action_unauthorized(self):
         headers = {"token": "invalid_token"}
         response = client.get("/admin/admin-action", headers=headers)
@@ -68,27 +75,27 @@ class TestAdminRoutes:
         assert response.json()["detail"] == "Unauthorized"
 
     def test_admin_action_authorized(self):
-        headers = {"token": "hardcoded_admin_token"}
+        headers = {"token": self.admin_token}
         response = client.get("/admin/admin-action", headers=headers)
         assert response.status_code == 200
         assert response.json()["message"] == "Admin action successful"
 
     def test_create_pizza(self):
-        headers = {"token": "hardcoded_admin_token"}
+        headers = {"token": self.admin_token}
         payload = {"id": 3, "name": "Hawaiian", "size": "large", "price": 13.99}
         response = client.post("/admin/menu", json=payload, headers=headers)
         assert response.status_code == 200
         assert response.json() == payload
 
     def test_delete_pizza(self):
-        headers = {"token": "hardcoded_admin_token"}
+        headers = {"token": self.admin_token}
         pizza_id = 1
         response = client.delete(f"/admin/menu/{pizza_id}", headers=headers)
         assert response.status_code == 200
         assert response.json()["message"] == "Pizza deleted"
 
     def test_cancel_order(self):
-        headers = {"token": "hardcoded_admin_token"}
+        headers = {"token": self.admin_token}
         create_response = client.post(
             "/customer/order", json={"pizza_id": 1, "quantity": 2}
         )
@@ -100,7 +107,7 @@ class TestAdminRoutes:
         assert orders[order_id].status == "cancelled"
 
     def test_cancel_order_order_not_found(self):
-        headers = {"token": "hardcoded_admin_token"}
+        headers = {"token": self.admin_token}
         response = client.delete("/admin/order/999", headers=headers)
         assert response.status_code == 404
         assert response.json()["detail"] == "Order not found"

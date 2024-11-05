@@ -1,14 +1,14 @@
+import os
 from fastapi import APIRouter, HTTPException, Depends, Header
 
 from python_module_tasks.advanced.api.models import Pizza
 from python_module_tasks.advanced.api.routes.customer import pizzas, orders
 
 router = APIRouter()
-ADMIN_TOKEN = "hardcoded_admin_token"
 
 
 def admin_auth(token: str = Header()):
-    if token != ADMIN_TOKEN:
+    if token != os.getenv("ADMIN_TOKEN"):
         raise HTTPException(status_code=401, detail="Unauthorized")
     return True
 
