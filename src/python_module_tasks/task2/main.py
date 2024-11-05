@@ -1,3 +1,4 @@
+import pprint
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -16,7 +17,8 @@ def main():
 
     survey = Survey(questions_file)
     res_data = survey.create()
-    print("RES DATA", res_data)
+    print("Survey creation result:")
+    pprint.pprint(res_data)
 
     emails_file = open(
         emails_file,
