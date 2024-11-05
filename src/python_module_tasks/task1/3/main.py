@@ -1,5 +1,7 @@
+import os
 import pprint
 import re
+import sys
 
 
 def read_acces_log(file_path: str) -> list[str]:
@@ -13,6 +15,9 @@ def get_user_agent(line: str) -> str:
 
 def main():
     file_path = input("Enter file path: ")
+    if os.path.exists(file_path) is False:
+        print("File not found")
+        sys.exit(1)
     lines = read_acces_log(file_path)
     user_agents_dict = {}
     for line in lines:

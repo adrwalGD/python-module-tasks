@@ -30,5 +30,11 @@ build-backend = "pdm.backend"
 distribution = true
 
 [tool.pdm.scripts]
+task1_1 = "python3 -m python_module_tasks.task1.1.main"
+task1_2 = "python3 -m python_module_tasks.task1.2.main"
+task1_3 = "python3 -m python_module_tasks.task1.3.main"
+task1_4 = "python3 -m python_module_tasks.task1.4.main"
+task1_5 = "python3 -m python_module_tasks.task1.5.main"
+task2 = "python3 -m python_module_tasks.task2.main"
 start-api = "python3 -m python_module_tasks.advanced.api.main"
 cli = "python3 -m python_module_tasks.advanced.client.cli"

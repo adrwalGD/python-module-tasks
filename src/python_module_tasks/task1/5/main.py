@@ -3,6 +3,7 @@ import os
 import platform
 import pprint
 import socket
+import sys
 
 import cpuinfo
 import psutil
@@ -70,6 +71,10 @@ def main():
         "-i", "--ip", action="store_true", help="Get private IP address"
     )
     args = parser.parse_args()
+
+    if len(sys.argv) == 1:
+        parser.print_help(sys.stderr)
+        sys.exit(1)
 
     if args.distro:
         pprint.pprint(get_distro_info())
