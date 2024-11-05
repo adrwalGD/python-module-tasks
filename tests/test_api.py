@@ -67,3 +67,10 @@ def test_admin_action_unauthorized():
     response = client.get("/admin/admin-action", headers=headers)
     assert response.status_code == 401
     assert response.json()["detail"] == "Unauthorized"
+
+
+def test_admin_action_authorized():
+    headers = {"token": "hardcoded_admin_token"}
+    response = client.get("/admin/admin-action", headers=headers)
+    assert response.status_code == 200
+    assert response.json()["message"] == "Admin action successful"

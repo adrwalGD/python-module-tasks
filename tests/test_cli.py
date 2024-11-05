@@ -9,7 +9,10 @@ runner = CliRunner()
 def test_list_menu():
     result = runner.invoke(app, ["list-menu"])
     assert result.exit_code == 0
-    assert "Margherita" in result.output
+    assert (
+        "1: Margherita (large) - $8.99\n2: Pepperoni (large) - $12.99\n"
+        in result.output
+    )
 
 
 @pytest.mark.usefixtures("run_api_server")
@@ -28,7 +31,7 @@ def test_check_order_status():
 
     result = runner.invoke(app, ["check-order-status", "--order-id", str(order_id)])
     assert result.exit_code == 0
-    assert "Status:" in result.output
+    assert "Status: pending" in result.output
 
 
 @pytest.mark.usefixtures("run_api_server")
@@ -48,3 +51,10 @@ def test_admin_action_unauthorized():
     result = runner.invoke(app, ["admin-action", "--token", "invalid_token"])
     assert result.exit_code == 0
     assert "Unauthorized" in result.output
+
+
+@pytest.mark.usefixtures("run_api_server")
+def test_admin_action_authorized():
+    result = runner.invoke(app, ["admin-action", "--token", "hardcoded_admin_token"])
+    assert result.exit_code == 0
+    assert "Admin action performed successfully." in result.output

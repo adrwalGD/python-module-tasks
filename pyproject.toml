@@ -31,3 +31,4 @@ distribution = true
 
 [tool.pdm.scripts]
 start-api = "python3 -m python_module_tasks.advanced.api.main"
+cli = "python3 -m python_module_tasks.advanced.client.cli"
